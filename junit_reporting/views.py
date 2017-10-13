@@ -26,15 +26,23 @@ class ReportView(DetailView):
 
     def get_object(self):
         print(self.request)
-        return get_object_or_404(
-            JUnitReport,
-            build_number=self.kwargs['build_number']
-        )
 
 
 class SuiteView(DetailView):
     template_name = 'junit_reporting/suite.html'
     model = JUnitSuite
+
+    def get_object(self):
+        print(self.request)
+        report = get_object_or_404(
+            JUnitReport,
+            build_number=self.kwargs['build_number']
+        )
+        return get_object_or_404(
+            JUnitSuite,
+            report=report,
+            name=self.kwargs['suite_name']
+        )
 
 
 class TestView(DetailView):

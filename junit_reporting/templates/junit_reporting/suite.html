@@ -4,5 +4,9 @@
   </head>
   <body>
     {{ object.name }}
+
+    {% for test in object.junittest_set.all %}
+    <li><a href="{{ test.get_absolute_url }}">{{ test.name }}</a></li>
+    {% endfor %}
   </body>
 </html>
