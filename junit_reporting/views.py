@@ -25,7 +25,10 @@ class ReportView(DetailView):
     template_name = 'junit_reporting/report.html'
 
     def get_object(self):
-        print(self.request)
+        return get_object_or_404(
+            JUnitReport,
+            build_number=self.kwargs['build_number']
+        )
 
 
 class SuiteView(DetailView):
