@@ -1,4 +1,5 @@
 # pylint: disable=missing-docstring,too-few-public-methods,too-many-ancestors
+from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
@@ -22,7 +23,13 @@ class IndexView(ListView):
 
 class ReportView(DetailView):
     template_name = 'junit_reporting/report.html'
-    model = JUnitReport
+
+    def get_object(self):
+        print(self.request)
+        return get_object_or_404(
+            JUnitReport,
+            build_number=self.kwargs['build_number']
+        )
 
 
 class SuiteView(DetailView):
