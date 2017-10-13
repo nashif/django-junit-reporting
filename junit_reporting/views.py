@@ -1,16 +1,31 @@
 # pylint: disable=missing-docstring,too-few-public-methods
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from junit_reporting.models import JUnitReport
+from junit_reporting.models import JUnitReport, JUnitSuite, JUnitTest
 
 
 class IndexView(ListView):
     template_name = "junit_reporting/index.html"
     model = JUnitReport
+
+
+class ReportView(DetailView):
+    template_name = 'junit_reporting/report.html'
+    model = JUnitReport
+
+
+class SuiteView(DetailView):
+    template_name = 'junit_reporting/suite.html'
+    model = JUnitSuite
+
+
+class TestView(DetailView):
+    template_name = 'junit_reporting/test.html'
+    model = JUnitTest
 
 
 class ReportUploadView(APIView):
