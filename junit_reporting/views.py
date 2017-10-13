@@ -81,7 +81,7 @@ class ReportUploadView(APIView):
         )
 
         junit = junitparser.JUnitXml().fromfile(file)
-        self._handle_junit_report(report, junit)
+        handle_junit_report(report, junit)
 
         return Response(status=204)
 
