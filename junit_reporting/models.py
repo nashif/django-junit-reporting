@@ -22,6 +22,9 @@ class JUnitReport(models.Model):
     def get_absolute_url(self):
         return ('report', [self.build_number])
 
+    def __str__(self):
+        return 'Report for build #{0}'.format(self.build_number)
+
 
 class JUnitSuite(models.Model):
     report = models.ForeignKey(JUnitReport, on_delete=models.CASCADE)
@@ -32,6 +35,9 @@ class JUnitSuite(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('suite', [self.report.build_number, self.name])
+
+    def __str__(self):
+        return '{0} - Build #{1}'.format(self.name, self.report.build_number)
 
 
 class JUnitTest(models.Model):
@@ -47,6 +53,14 @@ class JUnitTest(models.Model):
             self.suite.name,
             self.name
         ])
+
+    def __str__(self):
+        return '{0}::{1} - Suite {2} - Build #{3}'.format(
+            self.classname,
+            self.name,
+            self.suite.name,
+            self.suite.report.build_number
+        )
 
 
 class JUnitProblem(models.Model):
