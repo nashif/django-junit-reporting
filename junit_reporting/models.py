@@ -32,3 +32,18 @@ class JUnitSuite(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('suite', [self.report.build_number, self.name])
+
+
+class JUnitTest(models.Model):
+    suite = models.ForeignKey(JUnitSuite, on_delete=models.CASCADE)
+    name = models.CharField(max_length=512)
+    classname = models.CharField(max_length=512)
+    runtime = models.FloatField()
+
+    @permalink
+    def get_absolute_url(self):
+        return ('test', [
+            self.suite.report.build_number,
+            self.suite.name,
+            self.name
+        ])
