@@ -7,7 +7,7 @@
 
 <body>
   {% for report in object_list %}
-  <li><a href="{{ report.file_url }}">{{ report.build_number }}</a></li>
+  <li><a href="{{ report.get_absolute_url }}">{{ report.build_number }}</a></li>
   {% endfor %}
 </body>
 </html>
