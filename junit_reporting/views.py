@@ -1,11 +1,18 @@
-# pylint: disable=missing-docstring,too-few-public-methods
+# pylint: disable=missing-docstring,too-few-public-methods,too-many-ancestors
 from django.views.generic import DetailView, ListView
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from junit_reporting.models import JUnitReport, JUnitSuite, JUnitTest
+from junit_reporting.models import (
+    JUnitProblem,
+    JUnitReport,
+    JUnitSuite,
+    JUnitTest,
+)
+
+import junitparser
 
 
 class IndexView(ListView):
@@ -32,11 +39,53 @@ class ReportUploadView(APIView):
     parser_classes = (FileUploadParser,)
     permission_classes = (IsAuthenticated,)
 
-    def put(self, request, build_number, format=None):
-        file_object = request.data['file']
-        with open('reports/report_{0}.html'.format(build_number), 'wb') as file:
-            for chunk in file_object.chunks():
-                file.write(chunk)
+    # pylint: disable=unused-argument
+    def put(self, request, build_number, fmt=None):
+        file = request.data['file']
+        report, _ = JUnitReport.objects.get_or_create(
+            build_number=build_number
+        )
 
-        JUnitReport.objects.create(build_number=build_number)
+        junit = junitparser.JUnitXml().fromfile(file)
+        self._handle_junit_report(report, junit)
+
         return Response(status=204)
+
+
+def handle_junit_report(report, junit):
+    if isinstance(junit, junitparser.TestSuite):
+        handle_junit_suite(report, junit)
+
+
+def handle_junit_suite(report, junit):
+    suite, _ = JUnitSuite.objects.get_or_create(
+        report=report,
+        name=junit.name,
+        runtime=junit.time,
+        skipped=junit.skipped
+    )
+
+    for test in junit:
+        handle_junit_test(suite, test)
+
+
+def handle_junit_test(suite, junit):
+    test, _ = JUnitTest.objects.get_or_create(
+        suite=suite,
+        name=junit.name,
+        classname=junit.classname,
+        runtime=junit.time
+    )
+    result = junit.result
+    if isinstance(result, junitparser.Error):
+        JUnitProblem.objects.get_or_create(
+            test=test,
+            type='E',
+            message=junit.message
+        )
+    elif isinstance(result, junitparser.Failure):
+        JUnitProblem.objects.get_or_create(
+            test=test,
+            type='F',
+            message=junit.message
+        )

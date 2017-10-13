@@ -22,6 +22,7 @@ setup(
     install_requires=[
         'Django',
         'djangorestframework',
+        'junitparser',
     ],
     classifiers=[
         'Environment :: Web Environment',
