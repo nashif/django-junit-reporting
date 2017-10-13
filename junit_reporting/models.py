@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring
+# pylint: disable=missing-docstring,too-few-public-methods
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
@@ -14,7 +14,6 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
-# pylint: disable=too-few-public-methods
 class JUnitReport(models.Model):
     build_number = models.IntegerField(unique=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
@@ -22,3 +21,14 @@ class JUnitReport(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('report', [self.build_number])
+
+
+class JUnitSuite(models.Model):
+    report = models.ForeignKey(JUnitReport, on_delete=models.CASCADE)
+    name = models.CharField(max_length=512)
+    runtime = models.FloatField()
+    skipped = models.IntegerField()
+
+    @permalink
+    def get_absolute_url(self):
+        return ('suite', [self.report.build_number, self.pk])
