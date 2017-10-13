@@ -47,3 +47,14 @@ class JUnitTest(models.Model):
             self.suite.name,
             self.name
         ])
+
+
+class JUnitProblem(models.Model):
+    TYPES = (
+        ('E', 'Error'),
+        ('F', 'Failure'),
+    )
+
+    test = models.ForeignKey(JUnitTest, on_delete=models.CASCADE)
+    type = models.CharField(max_length=2, choices=TYPES, default='F')
+    message = models.TextField()
