@@ -18,6 +18,9 @@ class JUnitReport(models.Model):
     build_number = models.IntegerField(unique=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = 'JUnit Test Report'
+
     @permalink
     def get_absolute_url(self):
         return ('report', [self.build_number])
@@ -32,6 +35,9 @@ class JUnitSuite(models.Model):
     runtime = models.FloatField()
     skipped = models.IntegerField()
 
+    class Meta:
+        verbose_name = 'JUnit Test Suite'
+
     @permalink
     def get_absolute_url(self):
         return ('suite', [self.report.build_number, self.name])
@@ -45,6 +51,9 @@ class JUnitTest(models.Model):
     name = models.CharField(max_length=512)
     classname = models.CharField(max_length=512)
     runtime = models.FloatField()
+
+    class Meta:
+        verbose_name = 'JUnit Test Case'
 
     @permalink
     def get_absolute_url(self):
@@ -72,3 +81,6 @@ class JUnitProblem(models.Model):
     test = models.ForeignKey(JUnitTest, on_delete=models.CASCADE)
     type = models.CharField(max_length=2, choices=TYPES, default='F')
     message = models.TextField()
+
+    class Meta:
+        verbose_name = 'JUnit Test Case Problem'
