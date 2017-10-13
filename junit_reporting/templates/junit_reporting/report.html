@@ -4,5 +4,9 @@
   </head>
   <body>
     {{ object.build_number }}
+
+    {% for suite in object.junitsuite_set.all %}
+    <li><a href="{{ suite.get_absolute_url }}">{{ suite.name }}</a></li>
+    {% endfor %}
   </body>
 </html>
