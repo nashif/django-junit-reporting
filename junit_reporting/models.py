@@ -31,4 +31,4 @@ class JUnitSuite(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return ('suite', [self.report.build_number, self.pk])
+        return ('suite', [self.report.build_number, self.name])
