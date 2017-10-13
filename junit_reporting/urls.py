@@ -11,16 +11,16 @@ from junit_reporting.views import (
 
 
 REPORT_URL = (
-    r'^report/(?P<build_number>[1-9][0-9]+)/?'
+    r'^report/(?P<build_number>[1-9][0-9]+)/?$'
 )
 SUITE_URL = (
     r'^report/(?P<build_number>[1-9][0-9]+)/'
-    r'(?P<suite_name>[.a-zA-Z]+)/?'
+    r'(?P<suite_name>[.a-zA-Z]+)/?$'
 )
 TEST_URL = (
     r'^report/(?P<build_number>[1-9][0-9]+)/'
     r'(?P<suite_name>[.a-zA-Z]+)/'
-    r'(?P<test_name>[.a-zA-Z]+)/?'
+    r'(?P<test_name>[.a-zA-Z]+)/?$'
 )
 
 # pylint: disable=invalid-name
