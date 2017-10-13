@@ -1,3 +1,18 @@
+# pylint: disable=missing-docstring
 from django.contrib import admin
 
-# Register your models here.
+from junit_reporting.models import (
+    JUnitProblem,
+    JUnitReport,
+    JUnitSuite,
+    JUnitTest,
+)
+
+MODELS = [
+    JUnitProblem,
+    JUnitReport,
+    JUnitSuite,
+    JUnitTest,
+]
+
+admin.site.register(MODELS)
