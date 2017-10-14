@@ -26,6 +26,7 @@ setup(
         'django-font-awesome',
         'django-bootstrap3',
         'django-static-precompiler',
+        'django-autoslug',
     ],
     classifiers=[
         'Environment :: Web Environment',

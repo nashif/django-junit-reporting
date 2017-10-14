@@ -1,4 +1,5 @@
 # pylint: disable=missing-docstring,too-few-public-methods
+from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
@@ -14,9 +15,23 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
+class JUnitProject(models.Model):
+    name = models.CharField(max_length=128)
+    repo_url = models.URLField()
+    ci_url_pattern = models.CharField(max_length=256)
+    slug = AutoSlugField(populate_from='name')
+
+    class Meta:
+        verbose_name = 'JUnit Project'
+
+
 class JUnitReport(models.Model):
     build_number = models.IntegerField(unique=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(
+        JUnitProject,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = 'JUnit Test Report'
