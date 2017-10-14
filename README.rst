@@ -99,3 +99,73 @@ Demo
 
 A working demo can be found at the `ARKNet reporting <https://reporting.arknet.ch>`_
 site.
+
+Itegrations
+-----------
+
+JUnit Reporting uses a very simple interface to upload test results and is thus
+easy to integrate into a continuous integration (CI) process.
+
+GitLab CI
+^^^^^^^^^
+
+To publish your results from GitLab CI, you can use a script similar to this
+one:
+
+.. code-block:: bash
+
+  #!/usr/bin/env bash
+
+  set -e
+
+  TEST_RESULT_DIRECTORY='some/directory/where/your/results/are/stored'
+
+  for report in $(find ${TEST_RESULT_DIRECTORY} -iname '*.xml'); do
+    echo "Publishing results from ${report}"
+    curl -X PUT \
+      -H "Authorization: Token ${JUNIT_REPORTING_TOKEN}" \
+      -H "Content-Disposition: attachement; filename=${report}" \
+      --upload-file ${report} \
+      ${JUNIT_REPORTING_HOST}/p/${JUNIT_REPORTING_PROJECT}/upload/${CI_JOB_ID}
+  done
+
+This script expects that you export the following information into your CI
+environment (using GitLab CI secure variables for example):
+
+* JUNIT_REPORTING_HOST --- The host running JUnit Reporting (e.g. https://reporting.example.org)
+
+* JUNIT_REPORTING_TOKEN --- The authentication token for JUnit Reporting
+
+* JUNIT_REPORTING_PROJECT --- The JUnit Reporting project slug
+
+Travis CI
+^^^^^^^^^
+
+To publish your results from Travis CI, you can use a script similar to this
+one:
+
+.. code-block:: bash
+
+  #!/usr/bin/env bash
+
+  set -e
+
+  TEST_RESULT_DIRECTORY='some/directory/where/your/results/are/stored'
+
+  for report in $(find ${TEST_RESULT_DIRECTORY} -iname '*.xml'); do
+    echo "Publishing results from ${report}"
+    curl -X PUT \
+      -H "Authorization: Token ${JUNIT_REPORTING_TOKEN}" \
+      -H "Content-Disposition: attachement; filename=${report}" \
+      --upload-file ${report} \
+      ${JUNIT_REPORTING_HOST}/p/${JUNIT_REPORTING_PROJECT}/upload/${TRAVIS_BUILD_NUMBER}
+  done
+
+This script expects that you export the following information into your CI
+environment (using GitLab CI secure variables for example):
+
+* JUNIT_REPORTING_HOST --- The host running JUnit Reporting (e.g. https://reporting.example.org)
+
+* JUNIT_REPORTING_TOKEN --- The authentication token for JUnit Reporting
+
+* JUNIT_REPORTING_PROJECT --- The JUnit Reporting project slug
