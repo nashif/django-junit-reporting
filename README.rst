@@ -49,18 +49,7 @@ Getting Started
       'static_precompiler',
   ]
 
-2. Include the junit_reporting `URLconf` in your project `urls.py` like this:
-
-.. code-block:: python
-
-  from django.conf.urls import include
-  #  ...
-  urlpatterns = [
-    #  other URLs ...
-    url(r'^reporting', include('junit_reporting.urls')),
-  ]
-
-3. Make sure to include the static precompiler as a `STATICFILES_FINDERS` entry
+2. Make sure to include the static precompiler as a `STATICFILES_FINDERS` entry
    and ensure you have set you `STATIC_ROOT`, similar to this:
 
 .. code-block:: python
@@ -75,7 +64,7 @@ Getting Started
 
   STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-4. Enable token authorization in Django REST framework:
+3. Enable token authorization in Django REST framework:
 
 .. code-block:: python
 
@@ -87,6 +76,17 @@ Getting Started
           'rest_framework.authentication.TokenAuthentication',
       )
   }
+
+4. Include the junit_reporting `URLconf` in your project `urls.py` like this:
+
+.. code-block:: python
+
+  from django.conf.urls import include
+  #  ...
+  urlpatterns = [
+    #  other URLs ...
+    url(r'^reporting', include('junit_reporting.urls')),
+  ]
 
 5. Run `python manage.py migrate` to install the JUnit Reporting models.
 
