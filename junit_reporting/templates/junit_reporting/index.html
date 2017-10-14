@@ -20,8 +20,12 @@
       <h1 class="text-center">Latest Test Result</h1>
       <div class="ju-badge">
         <span class="fa-stack">
-          <i class="fa fa-circle fa-stack-2x ju-success"></i>
+          <i class="fa fa-circle fa-stack-2x ju-{{ latest_report.status }}"></i>
+          {% if latest_report.status == "success" %}
           <i class="fa fa-check fa-stack-1x"></i>
+          {% else %}
+          <i class="fa fa-times fa-stack-1x"></i>
+          {% endif %}
         </span>
       </div>
       <div class="container" style="margin-top:288px";>
@@ -35,12 +39,12 @@
             <th>Runtime</th>
           </tr>
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ latest_report.build_number }}</td>
+            <td>{{ latest_report.test_count }}</td>
+            <td>{{ latest_report.failure_count }}</td>
+            <td>{{ latest_report.error_count }}</td>
+            <td>{{ latest_report.skip_count }}</td>
+            <td>{{ latest_report.runtime }}</td>
           </tr>
         </table>
       </div>

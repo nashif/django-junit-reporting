@@ -19,6 +19,15 @@ import junitparser
 class IndexView(ListView):
     template_name = "junit_reporting/index.html"
     model = JUnitReport
+    queryset = model.objects.order_by('-submitted_at')
+
+    def get_queryset(self):
+        return self.queryset[1:]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['latest_report'] = self.queryset.first()
+        return context
 
 
 class ReportView(DetailView):

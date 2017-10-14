@@ -28,6 +28,52 @@ class JUnitReport(models.Model):
     def __str__(self):
         return 'Report for build #{0}'.format(self.build_number)
 
+    @property
+    def test_count(self):
+        count = 0
+        for suite in self.junitsuite_set.all():
+            count += suite.junittest_set.count()
+        return count
+
+    @property
+    def skip_count(self):
+        count = 0
+        for suite in self.junitsuite_set.all():
+            count += suite.skipped
+        return count
+
+    @property
+    def failure_count(self):
+        count = 0
+        for suite in self.junitsuite_set.all():
+            for test in suite.junittest_set.all():
+                failures = test.junitproblem_set.filter(type='F')
+                count += failures.count()
+        return count
+
+    @property
+    def error_count(self):
+        count = 0
+        for suite in self.junitsuite_set.all():
+            for test in suite.junittest_set.all():
+                failures = test.junitproblem_set.filter(type='E')
+                count += failures.count()
+        return count
+
+    @property
+    def runtime(self):
+        time = 0
+        for suite in self.junitsuite_set.all():
+            time += suite.runtime
+        return '{0} s'.format(time)
+
+    @property
+    def status(self):
+        return (
+            "success" if self.error_count == 0 and self.failure_count == 0
+            else "problem"
+        )
+
 
 class JUnitSuite(models.Model):
     report = models.ForeignKey(JUnitReport, on_delete=models.CASCADE)
