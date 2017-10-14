@@ -14,7 +14,7 @@
     </span>
   </div>
   <div class="container" style="margin-top:288px";>
-    <table class="table">
+    <table class="table text-left">
       <tr>
         <th>Build #</th>
         <th>Tests</th>
@@ -24,7 +24,7 @@
         <th>Runtime</th>
       </tr>
       <tr>
-        <td>{{ latest_report.build_number }}</td>
+        <td><a href="{{ latest_report.get_absolute_url }}">{{ latest_report.build_number }}</a></td>
         <td>{{ latest_report.test_count }}</td>
         <td {% if latest_report.failure_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ latest_report.failure_count }}</td>
         <td {% if latest_report.error_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ latest_report.error_count }}</td>
@@ -40,7 +40,7 @@
     <p>
       <div class="list-group">
         {% for report in object_list %}
-        <a class="list-group-item ju-{{ report.status }}-bg" href="{{ report.get_absolute_url }}">
+        <a class="list-group-item ju-{{ report.status }}-light-bg" href="{{ report.get_absolute_url }}">
           {% if report.status == "success" %}
           <i class="fa fa-check fa-fw" aria-hidden="true"></i>
           {% else %}
