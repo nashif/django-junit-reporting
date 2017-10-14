@@ -54,7 +54,7 @@ class SuiteView(DetailView):
     template_name = 'junit_reporting/suite.html'
     model = JUnitSuite
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         report = get_object_or_404(
             JUnitReport,
             build_number=self.kwargs['build_number']
@@ -64,6 +64,13 @@ class SuiteView(DetailView):
             report=report,
             name=self.kwargs['suite_name']
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['view'] = {
+            'title': self.object.name,
+        }
+        return context
 
 
 class TestView(DetailView):

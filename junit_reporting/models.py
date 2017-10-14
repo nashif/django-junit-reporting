@@ -119,6 +119,17 @@ class JUnitSuite(models.Model):
             count += failures.count()
         return count
 
+    @property
+    def status(self):
+        return (
+            "success" if self.error_count == 0 and self.failure_count == 0
+            else "problem"
+        )
+
+    @property
+    def tests(self):
+        return self.junittest_set.all()
+
 
 class JUnitTest(models.Model):
     suite = models.ForeignKey(JUnitSuite, on_delete=models.CASCADE)
@@ -144,6 +155,10 @@ class JUnitTest(models.Model):
             self.suite.name,
             self.suite.report.build_number
         )
+
+    @property
+    def status(self):
+        return "success" if self.junitproblem_set.count() == 0 else "problem"
 
 
 class JUnitProblem(models.Model):
