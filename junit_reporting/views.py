@@ -27,6 +27,9 @@ class IndexView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['latest_report'] = self.queryset.first()
+        context['view'] = {
+            'title': 'Overview',
+        }
         return context
 
 

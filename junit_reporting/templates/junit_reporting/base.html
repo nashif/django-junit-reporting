@@ -1,0 +1,22 @@
+{% load compile_static %}
+{% load static %}
+{% load bootstrap3 %}
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>JUnit Test Reporting - {{ view.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'junit_reporting/style/base.less'|compile %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}" />
+    {% bootstrap_css %}
+  </head>
+
+  <body>
+    <header>
+      JUnit Test Reporting - {{ view.title }}
+    </header>
+    {% block content %}
+    {% endblock content %}
+  </body>
+</html>
