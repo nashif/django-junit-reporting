@@ -24,6 +24,7 @@ setup(
         'djangorestframework',
         'junitparser',
         'django-font-awesome',
+        'django-bootstrap3',
     ],
     classifiers=[
         'Environment :: Web Environment',
