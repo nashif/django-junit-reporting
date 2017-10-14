@@ -25,6 +25,7 @@ setup(
         'junitparser',
         'django-font-awesome',
         'django-bootstrap3',
+        'django-static-precompiler',
     ],
     classifiers=[
         'Environment :: Web Environment',
