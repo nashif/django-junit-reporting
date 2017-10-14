@@ -147,8 +147,8 @@ def handle_junit_suite(report, junit):
     suite, _ = JUnitSuite.objects.get_or_create(
         report=report,
         name=junit.name,
-        runtime=junit.time,
-        skipped=junit.skipped
+        runtime=junit.time if junit.time else 0,
+        skipped=junit.skipped if junit.skipped else 0
     )
 
     for test in junit:
@@ -160,7 +160,7 @@ def handle_junit_test(suite, junit):
         suite=suite,
         name=junit.name,
         classname=junit.classname,
-        runtime=junit.time
+        runtime=junit.time if junit.time else 0
     )
     result = junit.result
     if isinstance(result, junitparser.Error):

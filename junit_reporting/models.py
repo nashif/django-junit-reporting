@@ -116,8 +116,8 @@ class JUnitReport(models.Model):
 class JUnitSuite(models.Model):
     report = models.ForeignKey(JUnitReport, on_delete=models.CASCADE)
     name = models.CharField(max_length=512)
-    runtime = models.FloatField()
-    skipped = models.IntegerField()
+    runtime = models.FloatField(default=0)
+    skipped = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'JUnit Test Suite'
@@ -173,7 +173,7 @@ class JUnitTest(models.Model):
     suite = models.ForeignKey(JUnitSuite, on_delete=models.CASCADE)
     name = models.CharField(max_length=512)
     classname = models.CharField(max_length=512)
-    runtime = models.FloatField()
+    runtime = models.FloatField(default=0)
 
     class Meta:
         verbose_name = 'JUnit Test Case'
