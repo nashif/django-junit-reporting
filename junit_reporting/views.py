@@ -38,6 +38,7 @@ class ProjectView(DetailView):
         context = super().get_context_data(**kwargs)
         reports = self.object.junitreport_set.order_by('-submitted_at')
         context['latest_report'] = reports.first()
+        context['reports'] = reports[1:]
         context['view'] = {
             'title': self.object.name,
         }
@@ -56,7 +57,10 @@ class ReportView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = {
-            'title': 'Build #{0}'.format(self.get_object().build_number),
+            'title': '{0} (#{1})'.format(
+                self.object.project,
+                self.object.build_number
+            ),
         }
         return context
 
@@ -79,7 +83,10 @@ class SuiteView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['view'] = {
-            'title': self.object.name,
+            'title': '{0} ({1})'.format(
+                self.object.report.project,
+                self.object.name,
+            )
         }
         return context
 
@@ -88,7 +95,7 @@ class TestView(DetailView):
     template_name = 'junit_reporting/test.html'
     model = JUnitTest
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         print(self.request)
         report = get_object_or_404(
             JUnitReport,
@@ -110,7 +117,7 @@ class ReportUploadView(APIView):
     parser_classes = (FileUploadParser,)
     permission_classes = (IsAuthenticated,)
 
-    # pylint: disable=unused-argument
+    # pylint: disable=unused-argument,no-self-use
     def put(self, request, build_number, fmt=None):
         file = request.data['file']
         report, _ = JUnitReport.objects.get_or_create(

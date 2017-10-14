@@ -15,24 +15,24 @@ PROJECT_URL = (
 )
 
 UPLOAD_URL = (
-    r'^p/(?P<slug>[-0-9a-z_]+)/'
+    r'^p/(?P<project_slug>[-0-9a-z_]+)/'
     r'upload/(?P<build_number>[1-9][0-9]+)$'
 )
 
 
 REPORT_URL = (
-    r'^p/(?P<slug>[-0-9a-z_]+)/'
-    r'^report/(?P<build_number>[1-9][0-9]+)/?$'
+    r'^p/(?P<project_slug>[-0-9a-z_]+)/'
+    r'report/(?P<build_number>[1-9][0-9]+)/?$'
 )
 
 SUITE_URL = (
-    r'^p/(?P<slug>[-0-9a-z_]+)/'
+    r'^p/(?P<project_slug>[-0-9a-z_]+)/'
     r'report/(?P<build_number>[1-9][0-9]+)/'
     r'(?P<suite_name>[.a-zA-Z]+)/?$'
 )
 
 TEST_URL = (
-    r'^p/(?P<slug>[-0-9a-z_]+)/'
+    r'^p/(?P<project_slug>[-0-9a-z_]+)/'
     r'report/(?P<build_number>[1-9][0-9]+)/'
     r'(?P<suite_name>[.a-zA-Z]+)/'
     r'(?P<test_name>[.a-zA-Z]+)/?$'

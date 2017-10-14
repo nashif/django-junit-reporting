@@ -44,7 +44,7 @@ class JUnitProject(models.Model):
 
 
 class JUnitReport(models.Model):
-    build_number = models.IntegerField(unique=True)
+    build_number = models.IntegerField()
     submitted_at = models.DateTimeField(auto_now_add=True)
     project = models.ForeignKey(
         JUnitProject,
@@ -53,10 +53,11 @@ class JUnitReport(models.Model):
 
     class Meta:
         verbose_name = 'JUnit Test Report'
+        unique_together = (('build_number', 'project'))
 
     @permalink
     def get_absolute_url(self):
-        return ('report', [self.build_number])
+        return ('report', [self.project.slug, self.build_number])
 
     def __str__(self):
         return 'Report for build #{0}'.format(self.build_number)
@@ -123,7 +124,11 @@ class JUnitSuite(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return ('suite', [self.report.build_number, self.name])
+        return ('suite', [
+            self.report.project.slug,
+            self.report.build_number,
+            self.name
+        ])
 
     def __str__(self):
         return '{0} - Build #{1}'.format(self.name, self.report.build_number)
@@ -176,6 +181,7 @@ class JUnitTest(models.Model):
     @permalink
     def get_absolute_url(self):
         return ('test', [
+            self.suite.report.project.slug,
             self.suite.report.build_number,
             self.suite.name,
             self.name
