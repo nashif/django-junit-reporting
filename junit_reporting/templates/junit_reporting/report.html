@@ -1,1 +1,62 @@
 {% extends "junit_reporting/base.html" %}
+
+{% block content %}
+<section>
+  <h1 class="text-center">Test Results</h1>
+  <div class="ju-badge">
+    <span class="fa-stack">
+      <i class="fa fa-circle fa-stack-2x ju-{{ object.status }}"></i>
+      {% if object.status == "success" %}
+      <i class="fa fa-check fa-stack-1x"></i>
+      {% else %}
+      <i class="fa fa-times fa-stack-1x"></i>
+      {% endif %}
+    </span>
+  </div>
+  <div class="container" style="margin-top:288px";>
+    <table class="table text-left">
+      <tr>
+        <th>Submission Date</th>
+        <th>Tests</th>
+        <th>Failures</th>
+        <th>Errors</th>
+        <th>Skips</th>
+        <th>Runtime</th>
+      </tr>
+      <tr>
+        <td>{{ object.submitted_at }}</td>
+        <td>{{ object.test_count }}</td>
+        <td>{{ object.failure_count }}</td>
+        <td>{{ object.error_count }}</td>
+        <td>{{ object.skip_count }}</td>
+        <td>{{ object.runtime }} s</td>
+      </tr>
+    </table>
+  </div>
+</section>
+<section>
+  <div class="container">
+    <h1>Suites</h1>
+    <table class="table text-left">
+      <tr>
+        <th>Suite</th>
+        <th>Tests</th>
+        <th>Failures</th>
+        <th>Errors</th>
+        <th>Skips</th>
+        <th>Runtime</th>
+      </tr>
+      {% for suite in object.suites %}
+      <tr>
+        <td><a href="{{ suite.get_absolute_url }}">{{ suite.name }}</a></td>
+        <td>{{ suite.test_count }}</td>
+        <td>{{ suite.failure_count }}</td>
+        <td>{{ suite.error_count }}</td>
+        <td>{{ suite.skip_count }}</td>
+        <td>{{ suite.runtime }} s</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -65,7 +65,7 @@ class JUnitReport(models.Model):
         time = 0
         for suite in self.junitsuite_set.all():
             time += suite.runtime
-        return '{0} s'.format(time)
+        return time
 
     @property
     def status(self):
@@ -73,6 +73,10 @@ class JUnitReport(models.Model):
             "success" if self.error_count == 0 and self.failure_count == 0
             else "problem"
         )
+
+    @property
+    def suites(self):
+        return self.junitsuite_set.all()
 
 
 class JUnitSuite(models.Model):
@@ -90,6 +94,30 @@ class JUnitSuite(models.Model):
 
     def __str__(self):
         return '{0} - Build #{1}'.format(self.name, self.report.build_number)
+
+    @property
+    def test_count(self):
+        return self.junittest_set.count()
+
+    @property
+    def skip_count(self):
+        return self.skipped
+
+    @property
+    def failure_count(self):
+        count = 0
+        for test in self.junittest_set.all():
+            failures = test.junitproblem_set.filter(type='F')
+            count += failures.count()
+        return count
+
+    @property
+    def error_count(self):
+        count = 0
+        for test in self.junittest_set.all():
+            failures = test.junitproblem_set.filter(type='E')
+            count += failures.count()
+        return count
 
 
 class JUnitTest(models.Model):
