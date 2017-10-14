@@ -45,6 +45,7 @@ section {
 
 @success-color: @emerald;
 @problem-color: @alizarin;
+@unknown-color: @amethyst;
 
 .ju-success {
   color: @success-color;
@@ -68,4 +69,16 @@ section {
 
 .ju-problem-light-bg {
   background-color: lighten(@problem-color, 30%) !important;
+}
+
+.ju-unknown {
+  color: @unknown-color;
+}
+
+.ju-unknown-bg {
+  background-color: @unknown-color !important;
+}
+
+.ju-unknown-light-bg {
+  background-color: lighten(@unknown-color, 30%) !important;
 }

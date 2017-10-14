@@ -2,6 +2,7 @@
 from django.contrib import admin
 
 from junit_reporting.models import (
+    JUnitProject,
     JUnitProblem,
     JUnitReport,
     JUnitSuite,
@@ -9,6 +10,7 @@ from junit_reporting.models import (
 )
 
 MODELS = [
+    JUnitProject,
     JUnitProblem,
     JUnitReport,
     JUnitSuite,

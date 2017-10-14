@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from junit_reporting.models import (
+    JUnitProject,
     JUnitProblem,
     JUnitReport,
     JUnitSuite,
@@ -18,17 +19,27 @@ import junitparser
 
 class IndexView(ListView):
     template_name = "junit_reporting/index.html"
-    model = JUnitReport
-    queryset = model.objects.order_by('-submitted_at')
-
-    def get_queryset(self):
-        return self.queryset[1:]
+    model = JUnitProject
+    queryset = model.objects.exclude(name__exact='_').order_by('name')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['latest_report'] = self.queryset.first()
         context['view'] = {
-            'title': 'Overview',
+            'title': 'Projects',
+        }
+        return context
+
+
+class ProjectView(DetailView):
+    template_name = 'junit_reporting/project.html'
+    model = JUnitProject
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        reports = self.object.junitreport_set.order_by('-submitted_at')
+        context['latest_report'] = reports.first()
+        context['view'] = {
+            'title': self.object.name,
         }
         return context
 

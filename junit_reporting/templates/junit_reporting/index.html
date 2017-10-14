@@ -2,55 +2,32 @@
 
 {% block content %}
 <section>
-  <h1 class="text-center">Latest Test Result</h1>
-  <div class="ju-badge">
-    <span class="fa-stack">
-      <i class="fa fa-circle fa-stack-2x ju-{{ latest_report.status }}"></i>
-      {% if latest_report.status == "success" %}
-      <i class="fa fa-check fa-stack-1x"></i>
-      {% else %}
-      <i class="fa fa-times fa-stack-1x"></i>
-      {% endif %}
-    </span>
-  </div>
-  <div class="container" style="margin-top:288px";>
-    <table class="table text-left">
-      <tr>
-        <th>Build #</th>
-        <th>Tests</th>
-        <th>Failures</th>
-        <th>Errors</th>
-        <th>Skips</th>
-        <th>Runtime</th>
-      </tr>
-      <tr>
-        <td><a href="{{ latest_report.get_absolute_url }}">{{ latest_report.build_number }}</a></td>
-        <td>{{ latest_report.test_count }}</td>
-        <td {% if latest_report.failure_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ latest_report.failure_count }}</td>
-        <td {% if latest_report.error_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ latest_report.error_count }}</td>
-        <td>{{ latest_report.skip_count }}</td>
-        <td>{{ latest_report.runtime }} s</td>
-      </tr>
-    </table>
-  </div>
-</section>
-<section>
   <div class="container">
-    <h1>Previous Test Results</h1>
+    {% if not object_list %}
+    <p>
+      <div class="alert alert-info" role="alert">
+        <strong>Hey There!</strong> Sadly, there are currently no projects registered. Please contact your site administrator
+        to request a project.
+      </div>
+    </p>
+    {% else %}
     <p>
       <div class="list-group">
-        {% for report in object_list %}
-        <a class="list-group-item ju-{{ report.status }}-light-bg" href="{{ report.get_absolute_url }}">
-          {% if report.status == "success" %}
+        {% for project in object_list %}
+        <a class="list-group-item ju-{{ project.status }}-light-bg" href="{{ project.get_absolute_url }}">
+          {% if project.status == "success" %}
           <i class="fa fa-check fa-fw" aria-hidden="true"></i>
-          {% else %}
+          {% elif project.status == "problem" %}
           <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+          {% else %}
+          <i class="fa fa-question fa-fw" aria-hidden="true"></i>
           {% endif %}
-          &nbsp; Build #{{ report.build_number }}
+          &nbsp; {{ project.name }}
         </a>
         {% endfor %}
       </div>
     </p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

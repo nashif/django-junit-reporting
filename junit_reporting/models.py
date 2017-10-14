@@ -24,6 +24,24 @@ class JUnitProject(models.Model):
     class Meta:
         verbose_name = 'JUnit Project'
 
+    @permalink
+    def get_absolute_url(self):
+        return ('project', [self.slug])
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def status(self):
+        reports = self.junitreport_set.all()
+        if not reports:
+            return 'unknown'
+
+        return (
+            'success' if all(r.status == 'success' for r in reports)
+            else 'problem'
+        )
+
 
 class JUnitReport(models.Model):
     build_number = models.IntegerField(unique=True)
