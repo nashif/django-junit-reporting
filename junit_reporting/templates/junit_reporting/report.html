@@ -26,8 +26,8 @@
       <tr>
         <td>{{ object.submitted_at }}</td>
         <td>{{ object.test_count }}</td>
-        <td>{{ object.failure_count }}</td>
-        <td>{{ object.error_count }}</td>
+        <td {% if object.failure_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ object.failure_count }}</td>
+        <td {% if object.error_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ object.error_count }}</td>
         <td>{{ object.skip_count }}</td>
         <td>{{ object.runtime }} s</td>
       </tr>
@@ -50,8 +50,8 @@
       <tr>
         <td><a href="{{ suite.get_absolute_url }}">{{ suite.name }}</a></td>
         <td>{{ suite.test_count }}</td>
-        <td>{{ suite.failure_count }}</td>
-        <td>{{ suite.error_count }}</td>
+        <td {% if suite.failure_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ suite.failure_count }}</td>
+        <td {% if suite.error_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ suite.error_count }}</td>
         <td>{{ suite.skip_count }}</td>
         <td>{{ suite.runtime }} s</td>
       </tr>

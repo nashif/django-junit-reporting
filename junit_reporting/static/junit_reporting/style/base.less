@@ -39,14 +39,29 @@ section {
   color: @clouds;
 }
 
+@success-color: @emerald;
+@problem-color: @alizarin;
+
 .ju-success {
-  color: @emerald;
+  color: @success-color;
+}
+
+.ju-success-bg {
+  background-color: @success-color !important;
+}
+
+.ju-success-light-bg {
+  background-color: lighten(@success-color, 30%) !important;
 }
 
 .ju-problem {
-  color: @alizarin;
+  color: @problem-color;
 }
 
-.ju-unknown {
-  color: @amethyst;
+.ju-problem-bg {
+  background-color: @problem-color !important;
+}
+
+.ju-problem-light-bg {
+  background-color: lighten(@problem-color, 30%) !important;
 }

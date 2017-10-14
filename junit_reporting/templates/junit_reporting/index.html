@@ -26,8 +26,8 @@
       <tr>
         <td>{{ latest_report.build_number }}</td>
         <td>{{ latest_report.test_count }}</td>
-        <td>{{ latest_report.failure_count }}</td>
-        <td>{{ latest_report.error_count }}</td>
+        <td {% if latest_report.failure_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ latest_report.failure_count }}</td>
+        <td {% if latest_report.error_count > 0 %}class="ju-problem-light-bg"{% endif %}>{{ latest_report.error_count }}</td>
         <td>{{ latest_report.skip_count }}</td>
         <td>{{ latest_report.runtime }} s</td>
       </tr>
@@ -40,8 +40,13 @@
     <p>
       <div class="list-group">
         {% for report in object_list %}
-        <a class="list-group-item" href="{{ report.get_absolute_url }}">
-          <i class="fa fa-check fa-fw" aria-hidden="true"></i>&nbsp; Build #{{ report.build_number }}
+        <a class="list-group-item ju-{{ report.status }}-bg" href="{{ report.get_absolute_url }}">
+          {% if report.status == "success" %}
+          <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+          {% else %}
+          <i class="fa fa-times fa-fw" aria-hidden="true"></i>
+          {% endif %}
+          &nbsp; Build #{{ report.build_number }}
         </a>
         {% endfor %}
       </div>
