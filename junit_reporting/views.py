@@ -138,6 +138,9 @@ class ReportUploadView(APIView):
 def handle_junit_report(report, junit):
     if isinstance(junit, junitparser.TestSuite):
         handle_junit_suite(report, junit)
+    elif isinstance(junit, junitparser.JUnitXml):
+        for suite in junit:
+            handle_junit_suite(report, suite)
 
 
 def handle_junit_suite(report, junit):

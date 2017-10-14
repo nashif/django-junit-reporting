@@ -1,7 +1,7 @@
 {% extends "junit_reporting/base.html" %}
 
 {% block content %}
-{% if not reports %}
+{% if not latest_report %}
 <section style="padding-bottom: 256px">
   <div class="container">
     <p>
@@ -55,6 +55,7 @@
 <section>
   <div class="container">
     <h1>Previous Test Results</h1>
+    {% if reports %}
     <p>
       <div class="list-group">
         {% for report in reports %}
@@ -69,6 +70,13 @@
         {% endfor %}
       </div>
     </p>
+    {% else %}
+    <p>
+      <div class="alert alert-info" role="alert">
+        <strong>Snap!</strong> There are no earlier builds. You really should test more!
+      </div>
+    </p>
+    {% endif %}
   </div>
 </section>
 {% endif %}
