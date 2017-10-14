@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from xml.etree.ElementTree import ParseError
 
 from junit_reporting.models import (
     JUnitProject,
@@ -118,14 +119,18 @@ class ReportUploadView(APIView):
     permission_classes = (IsAuthenticated,)
 
     # pylint: disable=unused-argument,no-self-use
-    def put(self, request, build_number, fmt=None):
+    def put(self, request, build_number, fmt=None, **kwargs):
         file = request.data['file']
         report, _ = JUnitReport.objects.get_or_create(
+            project=JUnitProject.objects.get(slug=self.kwargs['project_slug']),
             build_number=build_number
         )
 
-        junit = junitparser.JUnitXml().fromfile(file)
-        handle_junit_report(report, junit)
+        try:
+            junit = junitparser.JUnitXml().fromfile(file)
+            handle_junit_report(report, junit)
+        except ParseError:
+            return Response(status=400)
 
         return Response(status=204)
 
