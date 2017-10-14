@@ -60,7 +60,39 @@ Getting Started
     url(r'^reporting', include('junit_reporting.urls')),
   ]
 
-3. Run `python manage.py migrate` to install the JUnit Reporting models.
+3. Make sure to include the static precompiler as a `STATICFILES_FINDERS` entry
+   and ensure you have set you `STATIC_ROOT`, similar to this:
+
+.. code-block:: python
+
+  STATICFILES_FINDERS = (
+      'django.contrib.staticfiles.finders.FileSystemFinder',
+      'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+      'static_precompiler.finders.StaticPrecompilerFinder',
+  )
+
+  STATIC_URL = '/static/'
+
+  STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+4. Enable token authorization in Django REST framework:
+
+.. code-block:: python
+
+  REST_FRAMEWORK = {
+      'DEFAULT_PERMISSION_CLASSES': (
+          'rest_framework.permissions.IsAuthenticated',
+      ),
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+          'rest_framework.authentication.TokenAuthentication',
+      )
+  }
+
+5. Run `python manage.py migrate` to install the JUnit Reporting models.
+
+In order to start publishing test reports, you will need to create a user and at
+least one project. Currently, you can do this either using the Django python
+shell, or via the Django admin interface.
 
 Demo
 ----
