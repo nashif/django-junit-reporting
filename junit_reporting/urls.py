@@ -19,7 +19,6 @@ UPLOAD_URL = (
     r'upload/(?P<build_number>[1-9][0-9]*)$'
 )
 
-
 REPORT_URL = (
     r'^p/(?P<project_slug>[-0-9a-z_]+)/'
     r'report/(?P<build_number>[1-9][0-9]*)/?$'
@@ -28,14 +27,14 @@ REPORT_URL = (
 SUITE_URL = (
     r'^p/(?P<project_slug>[-0-9a-z_]+)/'
     r'report/(?P<build_number>[1-9][0-9]*)/'
-    r'(?P<suite_name>[.a-zA-Z]+)/?$'
+    r'(?P<suite_name>[.a-zA-Z/_ ()]+)/?$'
 )
 
 TEST_URL = (
     r'^p/(?P<project_slug>[-0-9a-z_]+)/'
     r'report/(?P<build_number>[1-9][0-9]*)/'
-    r'(?P<suite_name>[.a-zA-Z]+)/'
-    r'(?P<test_name>[.a-zA-Z]+)/?$'
+    r'(?P<suite_name>[.a-zA-Z/_ ()]+)/?$'
+    r'(?P<test_name>[.a-zA-Z/_ ()]+)/?$'
 )
 
 # pylint: disable=invalid-name
