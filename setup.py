@@ -23,6 +23,7 @@ setup(
         'Django',
         'djangorestframework',
         'junitparser',
+        'djngo-font-awesome',
     ],
     classifiers=[
         'Environment :: Web Environment',

@@ -1,0 +1,53 @@
+@import 'colors.less';
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: @clouds !important;
+}
+
+header {
+  color: @pomegranate;
+  font-family: Raleway, HelveticaNeue-Light, Arial, sans-serif;
+  font-size: 3.0em;
+  font-weight: bold;
+  margin-bottom: 96px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+section {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 300px;
+}
+
+.container {
+  text-align: center;
+}
+
+.ju-badge {
+  left: 50%;
+  width: 256px;
+  height: 256px;
+  position: absolute;
+  margin-left: -128px;
+  font-size: 128px;
+  color: @clouds;
+}
+
+.ju-success {
+  color: @emerald;
+}
+
+.ju-problem {
+  color: @alizarin;
+}
+
+.ju-unknown {
+  color: @amethyst;
+}
