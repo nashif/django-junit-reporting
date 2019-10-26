@@ -4,8 +4,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.db.models import permalink
 from rest_framework.authtoken.models import Token
+from django.urls import reverse
 
 
 # pylint: disable=unused-argument
@@ -24,9 +24,8 @@ class JUnitProject(models.Model):
     class Meta:
         verbose_name = 'JUnit Project'
 
-    @permalink
     def get_absolute_url(self):
-        return ('project', [self.slug])
+        return reverse('project', kwargs=[self.slug])
 
     def __str__(self):
         return self.name
@@ -55,9 +54,8 @@ class JUnitReport(models.Model):
         verbose_name = 'JUnit Test Report'
         unique_together = (('build_number', 'project'))
 
-    @permalink
     def get_absolute_url(self):
-        return ('report', [self.project.slug, self.build_number])
+        return reverse('report', kwargs=[self.project.slug, self.build_number])
 
     def __str__(self):
         return 'Report for build #{0}'.format(self.build_number)
@@ -122,9 +120,8 @@ class JUnitSuite(models.Model):
     class Meta:
         verbose_name = 'JUnit Test Suite'
 
-    @permalink
     def get_absolute_url(self):
-        return ('suite', [
+        return reverse('suite', kwargs=[
             self.report.project.slug,
             self.report.build_number,
             self.name
@@ -178,9 +175,8 @@ class JUnitTest(models.Model):
     class Meta:
         verbose_name = 'JUnit Test Case'
 
-    @permalink
     def get_absolute_url(self):
-        return ('test', [
+        return reverse('test', kwargs=[
             self.suite.report.project.slug,
             self.suite.report.build_number,
             self.suite.name,
